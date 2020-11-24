@@ -1,11 +1,12 @@
 package com.faircorp
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.widget.Toast
+import com.faircorp.model.ApiServices
 import com.faircorp.model.WindowAdapter
 import com.faircorp.model.WindowService
 
@@ -25,7 +26,12 @@ class WindowsActivity : BasicActivity(), OnWindowSelectedListener {
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
 
-        adapter.update(windowService.findAll()) // (4)
+        //adapter.update(windowService.findAll()) // (4)
+        runCatching { ApiServices().windowsApiService.findAll().execute() } // (1)
+            .onSuccess { adapter.update(it.body() ?: emptyList()) }  // (2)
+            .onFailure {
+                Toast.makeText(this, "Error on windows loading $it", Toast.LENGTH_LONG).show()  // (3)
+            }
     }
 
     override fun onWindowSelected(id: Long) {
