@@ -8,7 +8,7 @@ import android.widget.EditText
 
 const val WINDOW_NAME_PARAM = "com.faircorp.windowname.attribute"
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BasicActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
