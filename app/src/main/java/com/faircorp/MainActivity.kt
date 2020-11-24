@@ -14,18 +14,7 @@ class MainActivity : BasicActivity() {
         setContentView(R.layout.activity_main)
 
         val intent = Intent(this, WindowActivity::class.java).apply {
-            putExtra(WINDOW_NAME_PARAM, 0)
-        }
-        startActivity(intent)
-    }
-
-    /** Called when the user taps the button */
-    fun openWindow(view: View) {
-        val windowName = findViewById<EditText>(R.id.txt_window_name).text.toString()
-
-        // Do something in response to button
-        val intent = Intent(this, WindowActivity::class.java).apply {
-            putExtra(WINDOW_NAME_PARAM, windowName)
+            putExtra(WINDOW_NAME_PARAM, 1.0)
         }
         startActivity(intent)
     }

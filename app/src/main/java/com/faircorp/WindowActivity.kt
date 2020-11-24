@@ -12,10 +12,6 @@ class WindowActivity : BasicActivity() {
         setContentView(R.layout.activity_window)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-//        val param = intent.getStringExtra(WINDOW_NAME_PARAM)
-//        val windowName = findViewById<TextView>(R.id.txt_window_name)
-//        windowName.text = param
-
         val id = intent.getLongExtra(WINDOW_NAME_PARAM, 0)
         val windowService = WindowService()
         val window = windowService.findById(id)
