@@ -13,9 +13,7 @@ class MainActivity : BasicActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val intent = Intent(this, WindowActivity::class.java).apply {
-            putExtra(WINDOW_NAME_PARAM, 1.0)
-        }
+        val intent = Intent(this, WindowActivity::class.java).putExtra(WINDOW_NAME_PARAM, 1.0)
         startActivity(intent)
     }
 }
