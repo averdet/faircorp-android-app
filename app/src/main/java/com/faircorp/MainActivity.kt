@@ -12,6 +12,11 @@ class MainActivity : BasicActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val intent = Intent(this, WindowActivity::class.java).apply {
+            putExtra(WINDOW_NAME_PARAM, 0)
+        }
+        startActivity(intent)
     }
 
     /** Called when the user taps the button */
