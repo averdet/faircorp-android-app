@@ -5,4 +5,6 @@
     <string name="act_main_windowname_hint">Window name</string>
     <string name="act_main_welcome">Welcome on faircorp,\n the app to manage building windows</string>
     <string name="act_main_open_window">Open window</string>
+
+    <string name="act_window_name">Window name</string>
 </resources>
