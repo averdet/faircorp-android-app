@@ -15,4 +15,8 @@
     <string name="act_window_room_target_temp">Target room temperature</string>
     <string name="act_window_room_current_temp">Current room temperature</string>
     <string name="act_window_status">Status</string>
+
+    <string name="act_window_switch">Open</string>
+    <string name="act_window_switch_on">Opened</string>
+    <string name="act_window_switch_off">Closed</string>
 </resources>

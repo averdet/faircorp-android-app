@@ -1,6 +1,8 @@
 package com.faircorp
 
 import android.os.Bundle
+import android.view.View
+import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
@@ -69,5 +71,15 @@ class WindowActivity : BasicActivity() {
         }
 
 
+    }
+
+    fun onSwitchChange(view: View) {
+
+        val switchState = findViewById<Switch>(R.id.switch_window)
+        Toast.makeText(
+            applicationContext,
+            "Switch Change",
+            Toast.LENGTH_LONG
+        ).show()
     }
 }
