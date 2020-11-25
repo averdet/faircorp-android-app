@@ -6,9 +6,13 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.faircorp.model.ApiServices
 import com.faircorp.model.WindowAdapter
 import com.faircorp.model.WindowService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class WindowsActivity : BasicActivity(), OnWindowSelectedListener {
 
@@ -33,11 +37,24 @@ class WindowsActivity : BasicActivity(), OnWindowSelectedListener {
         recyclerView.adapter = adapter
 
         //adapter.update(windowService.findAll()) // (4)
-        runCatching { ApiServices().windowsApiService.findAll().execute() } // (1)
-            .onSuccess { adapter.update(it.body() ?: emptyList()) }  // (2)
-            .onFailure {
-                Toast.makeText(this, "Error on windows loading $it", Toast.LENGTH_LONG).show()  // (3)
-            }
+
+        lifecycleScope.launch(context = Dispatchers.IO) { // (1)
+            runCatching { ApiServices().windowsApiService.findAll().execute() } // (2)
+                .onSuccess {
+                    withContext(context = Dispatchers.Main) { // (3)
+                        adapter.update(it.body() ?: emptyList())
+                    }
+                }
+                .onFailure {
+                    withContext(context = Dispatchers.Main) { // (3)
+                        Toast.makeText(
+                            applicationContext,
+                            "Error on windows loading $it",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+        }
     }
 
     override fun onWindowSelected(id: Long) {
