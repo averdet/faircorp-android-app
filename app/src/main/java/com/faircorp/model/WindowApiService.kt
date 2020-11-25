@@ -14,8 +14,5 @@ interface WindowApiService {
     fun findById(@Path("id") id: Long): Call<WindowDto>
 
     @PUT("windows/{id}/switch")
-    fun updateWindow(@Path("id") id: Long, @Body window: WindowDto): Call<WindowDto>
-
-    @PUT("windows/{id}/switch")
-    fun switchWindow(@Path("id") id: Long)
+    fun switchStatus(@Path("id") id: Long): Call<WindowDto>
 }

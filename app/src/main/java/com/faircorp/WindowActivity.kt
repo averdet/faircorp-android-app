@@ -109,13 +109,15 @@ class WindowActivity : BasicActivity() {
         val changedWindow = WindowDto(window!!.id, window!!.name, newWindowStatus, window!!.roomName, window!!.roomId)
 
         lifecycleScope.launch(context = Dispatchers.IO) {
-            runCatching { ApiServices().windowsApiService.switchWindow(window!!.id) }
+            runCatching { ApiServices().windowsApiService.switchStatus(window!!.id).execute() }
                 .onSuccess {
                     withContext(context = Dispatchers.Main) {
 
                         findViewById<TextView>(R.id.txt_window_status).text = newWindowStatus.toString()
                         switch.text = newWindowStatus.toString()
                         switch.isChecked = newWindowStatus == WindowStatus.OPEN
+
+                        window = changedWindow
 
                         Toast.makeText(
                             applicationContext,
