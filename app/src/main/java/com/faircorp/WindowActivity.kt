@@ -1,9 +1,13 @@
 package com.faircorp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
-import com.faircorp.model.WindowService
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
+import com.faircorp.model.ApiServices
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class WindowActivity : BasicActivity() {
@@ -12,16 +16,34 @@ class WindowActivity : BasicActivity() {
         setContentView(R.layout.activity_window)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val id = intent.getLongExtra(WINDOW_NAME_PARAM, 1)
-        val windowService = WindowService()
-        val window = windowService.findById(id)
+        val id = intent.getLongExtra(WINDOW_NAME_PARAM, -10)
 
-        if (window != null) {
-            findViewById<TextView>(R.id.txt_window_name).text = window.name
-            findViewById<TextView>(R.id.txt_room_name).text = window.room.name
-            findViewById<TextView>(R.id.txt_window_current_temperature).text = window.room.currentTemperature?.toString()
-            findViewById<TextView>(R.id.txt_window_target_temperature).text = window.room.targetTemperature?.toString()
-            findViewById<TextView>(R.id.txt_window_status).text = window.status.toString()
+        lifecycleScope.launch(context = Dispatchers.IO) { // (1)
+            runCatching { ApiServices().windowsApiService.findById(id).execute() } // (2)
+                .onSuccess {
+                    withContext(context = Dispatchers.Main) { // (3)
+                        val window = it.body()
+
+                        if (window != null) {
+                            findViewById<TextView>(R.id.txt_window_name).text = window.name
+                            findViewById<TextView>(R.id.txt_room_name).text = window.roomName
+//                          findViewById<TextView>(R.id.txt_window_current_temperature).text = window.room.currentTemperature?.toString()
+//                          findViewById<TextView>(R.id.txt_window_target_temperature).text = window.room.targetTemperature?.toString()
+                            findViewById<TextView>(R.id.txt_window_status).text = window.windowStatus.toString()
+                        }
+                    }
+                }
+                .onFailure {
+                    withContext(context = Dispatchers.Main) { // (3)
+                        Toast.makeText(
+                            applicationContext,
+                            "Error on window loading $it",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
         }
+
+
     }
 }

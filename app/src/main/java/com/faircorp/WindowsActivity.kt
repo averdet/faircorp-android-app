@@ -9,14 +9,11 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.faircorp.model.ApiServices
 import com.faircorp.model.WindowAdapter
-import com.faircorp.model.WindowService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class WindowsActivity : BasicActivity(), OnWindowSelectedListener {
-
-    val windowService = WindowService() // (1)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
