@@ -7,6 +7,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.faircorp.model.ApiServices
+import com.faircorp.model.windowStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -52,10 +53,11 @@ class WindowActivity : BasicActivity() {
                                     }
                             }
 
-
                             findViewById<TextView>(R.id.txt_window_name).text = window.name
                             findViewById<TextView>(R.id.txt_room_name).text = window.roomName
                             findViewById<TextView>(R.id.txt_window_status).text = window.windowStatus.toString()
+                            findViewById<Switch>(R.id.switch_window).isChecked = window.windowStatus == windowStatus.OPEN
+
                         }
                     }
                 }
@@ -75,7 +77,7 @@ class WindowActivity : BasicActivity() {
 
     fun onSwitchChange(view: View) {
 
-        val switchState = findViewById<Switch>(R.id.switch_window)
+        val switch = findViewById<Switch>(R.id.switch_window)
         Toast.makeText(
             applicationContext,
             "Switch Change",
