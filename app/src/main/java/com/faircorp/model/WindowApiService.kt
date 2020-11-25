@@ -15,4 +15,7 @@ interface WindowApiService {
 
     @PUT("windows/{id}/switch")
     fun updateWindow(@Path("id") id: Long, @Body window: WindowDto): Call<WindowDto>
+
+    @PUT("windows/{id}/switch")
+    fun switchWindow(@Path("id") id: Long)
 }

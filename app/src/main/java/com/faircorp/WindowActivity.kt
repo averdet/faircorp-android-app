@@ -7,17 +7,34 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.faircorp.model.ApiServices
-import com.faircorp.model.windowStatus
+import com.faircorp.model.WindowDto
+import com.faircorp.model.WindowStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
 class WindowActivity : BasicActivity() {
+
+    var window: WindowDto? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_window)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        loadWindow(savedInstanceState)
+
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        window = savedInstanceState.getParcelable("window")
+
+        if (window == null) loadWindow(savedInstanceState)
+    }
+
+    private fun loadWindow(savedInstanceState: Bundle?) {
 
         val id = intent.getLongExtra(WINDOW_NAME_PARAM, -10)
 
@@ -25,12 +42,15 @@ class WindowActivity : BasicActivity() {
             runCatching { ApiServices().windowsApiService.findById(id).execute() } // (2)
                 .onSuccess {
                     withContext(context = Dispatchers.Main) { // (3)
-                        val window = it.body()
+                        window = it.body()
 
                         if (window != null) {
+                            savedInstanceState?.putParcelable("window", window)
 
                             lifecycleScope.launch(context = Dispatchers.IO) {
-                                runCatching { ApiServices().roomsApiService.findById(window.roomId).execute() }
+                                runCatching {
+                                    ApiServices().roomsApiService.findById(window!!.roomId).execute()
+                                }
                                     .onSuccess {
                                         withContext(context = Dispatchers.Main) {
                                             val room = it.body()
@@ -53,10 +73,14 @@ class WindowActivity : BasicActivity() {
                                     }
                             }
 
-                            findViewById<TextView>(R.id.txt_window_name).text = window.name
-                            findViewById<TextView>(R.id.txt_room_name).text = window.roomName
-                            findViewById<TextView>(R.id.txt_window_status).text = window.windowStatus.toString()
-                            findViewById<Switch>(R.id.switch_window).isChecked = window.windowStatus == windowStatus.OPEN
+                            findViewById<TextView>(R.id.txt_window_name).text = window!!.name
+                            findViewById<TextView>(R.id.txt_room_name).text = window!!.roomName
+                            findViewById<TextView>(R.id.txt_window_status).text =
+                                window!!.windowStatus.toString()
+                            findViewById<Switch>(R.id.switch_window).text =
+                                window!!.windowStatus.toString()
+                            findViewById<Switch>(R.id.switch_window).isChecked =
+                                window!!.windowStatus == WindowStatus.OPEN
 
                         }
                     }
@@ -71,17 +95,46 @@ class WindowActivity : BasicActivity() {
                     }
                 }
         }
-
-
     }
 
     fun onSwitchChange(view: View) {
 
         val switch = findViewById<Switch>(R.id.switch_window)
-        Toast.makeText(
-            applicationContext,
-            "Switch Change",
-            Toast.LENGTH_LONG
-        ).show()
+        val newWindowStatus = if (window!!.windowStatus == WindowStatus.CLOSED) {
+            WindowStatus.OPEN
+        } else {
+            WindowStatus.CLOSED
+        }
+
+        val changedWindow = WindowDto(window!!.id, window!!.name, newWindowStatus, window!!.roomName, window!!.roomId)
+
+        lifecycleScope.launch(context = Dispatchers.IO) {
+            runCatching { ApiServices().windowsApiService.switchWindow(window!!.id) }
+                .onSuccess {
+                    withContext(context = Dispatchers.Main) {
+
+                        findViewById<TextView>(R.id.txt_window_status).text = newWindowStatus.toString()
+                        switch.text = newWindowStatus.toString()
+                        switch.isChecked = newWindowStatus == WindowStatus.OPEN
+
+                        Toast.makeText(
+                            applicationContext,
+                            "Window Status Changed",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+                .onFailure {
+                    withContext(context = Dispatchers.Main) {
+
+                    }
+                    Toast.makeText(
+                        applicationContext,
+                        "Failed switching $it",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+        }
+
     }
 }
