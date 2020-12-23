@@ -6,21 +6,20 @@ import android.os.Parcelable
 enum class WindowStatus { OPEN, CLOSED}
 
 
-data class WindowDto (val id: Long, val name: String, val windowStatus: WindowStatus, val roomName: String, val roomId: Long): Parcelable {
+data class WindowDto (val id: Long, val name: String, val windowStatus: WindowStatus, val room: RoomDto): Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readLong(),
-        parcel.readString()!!,
-        WindowStatus.valueOf(parcel.readString()!!),
-        parcel.readString()!!,
-        parcel.readLong()
+        id = parcel.readLong(),
+        name = parcel.readString()!!,
+        windowStatus = WindowStatus.valueOf(parcel.readString()!!),
+        room = RoomDto.createFromParcel(parcel)
     ) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(id)
         parcel.writeString(name)
-        parcel.writeString(roomName)
-        parcel.writeLong(roomId)
+        parcel.writeString(windowStatus.toString())
+        room.writeToParcel(parcel, 0)
     }
 
     override fun describeContents(): Int {

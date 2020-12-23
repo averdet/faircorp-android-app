@@ -47,34 +47,12 @@ class WindowActivity : BasicActivity() {
                         if (window != null) {
                             savedInstanceState?.putParcelable("window", window)
 
-                            lifecycleScope.launch(context = Dispatchers.IO) {
-                                runCatching {
-                                    ApiServices().roomsApiService.findById(window!!.roomId).execute()
-                                }
-                                    .onSuccess {
-                                        withContext(context = Dispatchers.Main) {
-                                            val room = it.body()
-                                            if (room != null) {
-                                                findViewById<TextView>(R.id.txt_window_current_temperature).text =
-                                                    room.currentTemperature?.toString()
-                                                findViewById<TextView>(R.id.txt_window_target_temperature).text =
-                                                    room.targetTemperature?.toString()
-                                            }
-                                        }
-                                    }
-                                    .onFailure {
-                                        withContext(context = Dispatchers.Main) {
-                                            Toast.makeText(
-                                                applicationContext,
-                                                "Error on room loading $it",
-                                                Toast.LENGTH_LONG
-                                            ).show()
-                                        }
-                                    }
-                            }
-
                             findViewById<TextView>(R.id.txt_window_name).text = window!!.name
-                            findViewById<TextView>(R.id.txt_room_name).text = window!!.roomName
+                            findViewById<TextView>(R.id.txt_room_name).text = window!!.room.name
+                            findViewById<TextView>(R.id.txt_window_current_temperature).text =
+                                window!!.room.currentTemperature?.toString()
+                            findViewById<TextView>(R.id.txt_window_target_temperature).text =
+                                window!!.room.targetTemperature?.toString()
                             findViewById<TextView>(R.id.txt_window_status).text =
                                 window!!.windowStatus.toString()
                             findViewById<Switch>(R.id.switch_window).text =
@@ -106,7 +84,7 @@ class WindowActivity : BasicActivity() {
             WindowStatus.CLOSED
         }
 
-        val changedWindow = WindowDto(window!!.id, window!!.name, newWindowStatus, window!!.roomName, window!!.roomId)
+        val changedWindow = WindowDto(window!!.id, window!!.name, newWindowStatus, window!!.room)
 
         lifecycleScope.launch(context = Dispatchers.IO) {
             runCatching { ApiServices().windowsApiService.switchStatus(window!!.id).execute() }
