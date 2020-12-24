@@ -5,7 +5,7 @@ import android.os.Parcelable
 
 enum class HeaterStatus { ON, OFF}
 
-data class HeaterDto (val id: Long, val name: String, val power: Long, val heaterStatus: HeaterStatus, val room: RoomDto) :
+data class HeaterDto (val id: Long, val name: String, val power: Long?, val heaterStatus: HeaterStatus, val room: RoomDto) :
     Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
@@ -19,7 +19,9 @@ data class HeaterDto (val id: Long, val name: String, val power: Long, val heate
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(id)
         parcel.writeString(name)
-        parcel.writeLong(power)
+        if (power != null) {
+            parcel.writeLong(power)
+        }
         parcel.writeParcelable(room, flags)
     }
 
