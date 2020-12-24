@@ -12,7 +12,7 @@ data class HeaterDto (val id: Long, val name: String, val power: Long, val heate
         parcel.readString()!!,
         parcel.readLong(),
         HeaterStatus.valueOf(parcel.readString()!!),
-        RoomDto.createFromParcel(parcel)
+        parcel.readParcelable<RoomDto>(RoomDto::class.java.classLoader)!!
     ) {
     }
 
