@@ -11,11 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import com.faircorp.model.ApiServices
 import com.faircorp.model.HeaterDto
 import com.faircorp.model.HeaterStatus
-import com.faircorp.model.WindowStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.w3c.dom.Text
 
 class HeaterActivity : AppCompatActivity() {
 
@@ -72,6 +70,21 @@ class HeaterActivity : AppCompatActivity() {
                         }
                     }
         }
+
+        val seekBar = findViewById<SeekBar>(R.id.heater_seekbar)
+        seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, b: Boolean) {
+                onSeekBarChange(seekBar, progress)
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            }
+        })
     }
 
     fun onSwitchChange(view: View) {
@@ -82,7 +95,7 @@ class HeaterActivity : AppCompatActivity() {
             HeaterStatus.ON
         }
 
-        val changedHeater = HeaterDto(heater!!.id, heater!!.name, heater!!.power, heater!!.heaterStatus, heater!!.room)
+        val changedHeater = HeaterDto(heater!!.id, heater!!.name, heater!!.power, newHeaterStatus, heater!!.room)
 
         lifecycleScope.launch(context = Dispatchers.IO) {
             runCatching { ApiServices().heatersApiService.switchStatus(heater!!.id).execute() }
@@ -104,13 +117,45 @@ class HeaterActivity : AppCompatActivity() {
                     }
                     .onFailure {
                         withContext(context = Dispatchers.Main) {
-
+                            Toast.makeText(
+                                    applicationContext,
+                                    "Failed switching $it",
+                                    Toast.LENGTH_LONG
+                            ).show()
                         }
-                        Toast.makeText(
-                                applicationContext,
-                                "Failed switching $it",
-                                Toast.LENGTH_LONG
-                        ).show()
+
+                    }
+        }
+    }
+
+    fun onSeekBarChange(seekBar: SeekBar, newPower: Int) {
+
+        val changedHeater = HeaterDto(heater!!.id, heater!!.name, newPower.toLong(), heater!!.heaterStatus, heater!!.room)
+
+        lifecycleScope.launch(context = Dispatchers.IO) {
+            runCatching { ApiServices().heatersApiService.setPower(heater!!.id, newPower.toLong()).execute() }
+                    .onSuccess {
+                        withContext(context = Dispatchers.Main) {
+                            findViewById<TextView>(R.id.txt_heater_power).text = newPower.toString()
+
+                            heater = changedHeater
+
+                            Toast.makeText(
+                                    applicationContext,
+                                    "Heater Power Changed",
+                                    Toast.LENGTH_LONG
+                            ).show()
+                        }
+
+                    }
+                    .onFailure {
+                        withContext(context = Dispatchers.Main) {
+                            Toast.makeText(
+                                    applicationContext,
+                                    "Failed setting power $it",
+                                    Toast.LENGTH_LONG
+                            ).show()
+                        }
                     }
         }
     }
