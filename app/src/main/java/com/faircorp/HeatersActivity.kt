@@ -55,7 +55,7 @@ class HeatersActivity : BasicActivity(), OnHeaterSelectedListener {
     }
 
     override fun onHeaterSelected(id: Long) {
-        val intent = Intent(this, HeaterActivity::class.java).putExtra(WINDOW_NAME_PARAM, id)
+        val intent = Intent(this, HeaterActivity::class.java).putExtra(HEATER_NAME_PARAM, id)
         startActivity(intent)
     }
 }
