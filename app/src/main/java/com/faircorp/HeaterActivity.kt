@@ -74,15 +74,15 @@ class HeaterActivity : AppCompatActivity() {
         val seekBar = findViewById<SeekBar>(R.id.heater_seekbar)
         seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, b: Boolean) {
-                onSeekBarChange(seekBar, progress)
+                findViewById<TextView>(R.id.txt_heater_power).text = seekBar.progress.toString()
             }
 
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
 
             }
 
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                onSeekBarChange(seekBar)
             }
         })
     }
@@ -128,8 +128,9 @@ class HeaterActivity : AppCompatActivity() {
         }
     }
 
-    fun onSeekBarChange(seekBar: SeekBar, newPower: Int) {
+    fun onSeekBarChange(seekBar: SeekBar) {
 
+        val newPower = seekBar.progress
         val changedHeater = HeaterDto(heater!!.id, heater!!.name, newPower.toLong(), heater!!.heaterStatus, heater!!.room)
 
         lifecycleScope.launch(context = Dispatchers.IO) {
