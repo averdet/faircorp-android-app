@@ -11,7 +11,7 @@ data class WindowDto (val id: Long, val name: String, val windowStatus: WindowSt
         id = parcel.readLong(),
         name = parcel.readString()!!,
         windowStatus = WindowStatus.valueOf(parcel.readString()!!),
-        room = RoomDto.createFromParcel(parcel)
+        room = parcel.readParcelable<RoomDto>(RoomDto::class.java.classLoader)!!
     ) {
     }
 
@@ -19,7 +19,7 @@ data class WindowDto (val id: Long, val name: String, val windowStatus: WindowSt
         parcel.writeLong(id)
         parcel.writeString(name)
         parcel.writeString(windowStatus.toString())
-        room.writeToParcel(parcel, 0)
+        parcel.writeParcelable(room, flags)
     }
 
     override fun describeContents(): Int {

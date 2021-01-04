@@ -106,13 +106,12 @@ class WindowActivity : BasicActivity() {
                 }
                 .onFailure {
                     withContext(context = Dispatchers.Main) {
-
+                        Toast.makeText(
+                                applicationContext,
+                                "Failed switching $it",
+                                Toast.LENGTH_LONG
+                        ).show()
                     }
-                    Toast.makeText(
-                        applicationContext,
-                        "Failed switching $it",
-                        Toast.LENGTH_LONG
-                    ).show()
                 }
         }
 

@@ -19,4 +19,12 @@ class ApiServices {
             .build()
             .create(RoomApiService::class.java)
     }
+
+    val heatersApiService : HeaterApiService by lazy {
+        Retrofit.Builder()
+            .addConverterFactory(MoshiConverterFactory.create())
+            .baseUrl("https://faircorp-alexandre-verdet.cleverapps.io/api/")
+            .build()
+            .create(HeaterApiService::class.java)
+    }
 }

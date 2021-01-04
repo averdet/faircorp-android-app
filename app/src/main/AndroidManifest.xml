@@ -11,7 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Faircorp">
-        <activity android:name=".WindowsActivity"></activity>
+        <activity
+            android:name=".HeaterActivity"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".HeatersActivity" />
+        <activity android:name=".WindowsActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

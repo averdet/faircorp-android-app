@@ -7,6 +7,10 @@
         android:title="@string/menu_windows"
         app:showAsAction="never" />
     <item
+        android:id="@+id/menu_heaters"
+        android:title="@string/menu_heaters"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/menu_website"
         android:title="@string/menu_website"
         app:showAsAction="never" />
