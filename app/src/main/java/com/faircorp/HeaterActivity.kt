@@ -2,6 +2,7 @@ package com.faircorp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.SeekBar
 import android.widget.Switch
 import android.widget.TextView
@@ -10,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.faircorp.model.ApiServices
 import com.faircorp.model.HeaterDto
 import com.faircorp.model.HeaterStatus
+import com.faircorp.model.WindowStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -68,6 +70,47 @@ class HeaterActivity : AppCompatActivity() {
                                     Toast.LENGTH_LONG
                             ).show()
                         }
+                    }
+        }
+    }
+
+    fun onSwitchChange(view: View) {
+        val switch = findViewById<Switch>(R.id.heater_switch)
+        val newHeaterStatus = if (heater!!.heaterStatus == HeaterStatus.ON) {
+            HeaterStatus.OFF
+        } else {
+            HeaterStatus.ON
+        }
+
+        val changedHeater = HeaterDto(heater!!.id, heater!!.name, heater!!.power, heater!!.heaterStatus, heater!!.room)
+
+        lifecycleScope.launch(context = Dispatchers.IO) {
+            runCatching { ApiServices().heatersApiService.switchStatus(heater!!.id).execute() }
+                    .onSuccess {
+                        withContext(context = Dispatchers.Main) {
+
+                            findViewById<TextView>(R.id.txt_heater_status).text = newHeaterStatus.toString()
+                            switch.text = newHeaterStatus.toString()
+                            switch.isChecked = newHeaterStatus == HeaterStatus.ON
+
+                            heater = changedHeater
+
+                            Toast.makeText(
+                                    applicationContext,
+                                    "Heater Status Changed",
+                                    Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                    .onFailure {
+                        withContext(context = Dispatchers.Main) {
+
+                        }
+                        Toast.makeText(
+                                applicationContext,
+                                "Failed switching $it",
+                                Toast.LENGTH_LONG
+                        ).show()
                     }
         }
     }
