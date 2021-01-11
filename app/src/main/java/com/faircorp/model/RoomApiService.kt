@@ -10,4 +10,7 @@ interface RoomApiService {
 
     @GET("rooms/{id}")
     fun findById(@Path("id") id: Long): Call<RoomDto>
+
+    @GET("rooms/building/{building_id}")
+    fun findByBuildingId(@Path("building_id") building_id: Long): Call<List<RoomDto>>
 }

@@ -66,12 +66,12 @@ class RoomActivity : AppCompatActivity() {
         }
     }
 
-    private fun onHeaterList(view: View) {
+    fun onHeaterList(view: View) {
         val intent = Intent(this, HeatersActivity::class.java).putExtra(ROOM_NAME_PARAM, room!!.id)
         startActivity(intent)
     }
 
-    private fun onWindowList(view: View) {
+    fun onWindowList(view: View) {
         val intent = Intent(this, WindowsActivity::class.java).putExtra(ROOM_NAME_PARAM, room!!.id)
         startActivity(intent)
     }

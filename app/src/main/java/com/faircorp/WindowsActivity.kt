@@ -33,10 +33,11 @@ class WindowsActivity : BasicActivity(), OnWindowSelectedListener {
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
 
-        //adapter.update(windowService.findAll()) // (4)
+        val room_id = intent.getLongExtra(ROOM_NAME_PARAM, -200)
 
         lifecycleScope.launch(context = Dispatchers.IO) { // (1)
-            runCatching { ApiServices().windowsApiService.findAll().execute() } // (2)
+            if ( room_id == (-200).toLong()) { runCatching { ApiServices().windowsApiService.findAll().execute() } }
+            else { runCatching { ApiServices().windowsApiService.findByRoomId(room_id).execute() } }
                 .onSuccess {
                     withContext(context = Dispatchers.Main) { // (3)
                         adapter.update(it.body() ?: emptyList())

@@ -34,25 +34,26 @@ class RoomsActivity : BasicActivity(), OnRoomSelectedListener {
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
 
-        //adapter.update(windowService.findAll()) // (4)
+        val building_id = intent.getLongExtra(BUILDING_NAME_PARAM, -200)
 
         lifecycleScope.launch(context = Dispatchers.IO) { // (1)
-            runCatching { ApiServices().roomsApiService.findAll().execute() } // (2)
-                .onSuccess {
-                    withContext(context = Dispatchers.Main) { // (3)
-                        adapter.update(it.body() ?: emptyList())
+            if ( building_id == (-200).toLong()) { runCatching { ApiServices().roomsApiService.findAll().execute() } }
+            else {runCatching { ApiServices().roomsApiService.findByBuildingId(building_id).execute() }}// (2)
+                    .onSuccess {
+                        withContext(context = Dispatchers.Main) { // (3)
+                            adapter.update(it.body() ?: emptyList())
+                        }
                     }
-                }
-                .onFailure {
-                    withContext(context = Dispatchers.Main) { // (3)
-                        Toast.makeText(
-                            applicationContext,
-                            "Error on rooms loading $it",
-                            Toast.LENGTH_LONG
-                        ).show()
+                    .onFailure {
+                        withContext(context = Dispatchers.Main) { // (3)
+                            Toast.makeText(
+                                applicationContext,
+                                "Error on rooms loading $it",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                     }
-                }
-        }
+            }
     }
 
     override fun onRoomSelected(id: Long) {
