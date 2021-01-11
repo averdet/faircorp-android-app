@@ -11,10 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Faircorp">
-        <activity android:name=".RoomActivity"></activity>
-        <activity android:name=".RoomsActivity"
-            android:parentActivityName=".MainActivity"/>
-        <activity android:name=".HeaterActivity"/>
+        <activity android:name=".activity_building_item"></activity>
+        <activity android:name=".RoomActivity" />
+        <activity
+            android:name=".RoomsActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".HeaterActivity" />
         <activity android:name=".HeatersActivity" />
         <activity android:name=".WindowsActivity" />
         <activity android:name=".MainActivity">
@@ -24,7 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".WindowActivity"/>
+        <activity android:name=".WindowActivity" />
     </application>
 
 </manifest>
