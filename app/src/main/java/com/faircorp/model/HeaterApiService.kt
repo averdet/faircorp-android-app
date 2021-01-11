@@ -12,6 +12,12 @@ interface HeaterApiService {
     @GET("heaters/{heater_id}")
     fun findById(@Path("heater_id") heater_id: Long): Call<HeaterDto>
 
+    @GET("heaters/room/{room_id}")
+    fun findByRoomId(@Path("room_id") room_id: Long): Call<List<HeaterDto>>
+
+    @GET("heaters/building/{building_id}")
+    fun findByRoomBuildingId(@Path("building_id") building_id: Long): Call<List<HeaterDto>>
+
     @PUT("heaters/{heater_id}/switch")
     fun switchStatus(@Path("heater_id") heater_id: Long): Call<HeaterDto>
 
