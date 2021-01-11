@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 
+const val ROOM_NAME_PARAM = "com.faircorp.heatername.attribute"
 const val WINDOW_NAME_PARAM = "com.faircorp.windowname.attribute"
 const val HEATER_NAME_PARAM = "com.faircorp.heatername.attribute"
 
@@ -14,7 +15,7 @@ class MainActivity : BasicActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val intent = Intent(this, WindowActivity::class.java)
+        val intent = Intent(this, RoomsActivity::class.java)
         startActivity(intent)
     }
 }

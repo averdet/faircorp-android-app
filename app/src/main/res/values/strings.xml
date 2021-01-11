@@ -6,6 +6,7 @@
     <string name="act_main_welcome">Welcome on faircorp,\n the app to manage building windows</string>
     <string name="act_main_open_window">Open window</string>
 
+    <string name="menu_rooms">Building rooms</string>
     <string name="menu_windows">Building windows</string>
     <string name="menu_heaters">Building heaters</string>
     <string name="menu_website">Our website</string>

@@ -7,13 +7,15 @@ data class RoomDto(val id: Long,
                    val name: String,
                    val currentTemperature: Double?,
                    val targetTemperature: Double?,
-                   val floor: Int) : Parcelable {
+                   val floor: Int,
+                   val building: BuildingDto) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
         parcel.readString()!!,
         parcel.readValue(Double::class.java.classLoader) as? Double,
         parcel.readValue(Double::class.java.classLoader) as? Double,
-        parcel.readInt()
+        parcel.readInt(),
+        building = parcel.readParcelable<BuildingDto>(BuildingDto::class.java.classLoader)!!
     ) {
     }
 
@@ -23,6 +25,7 @@ data class RoomDto(val id: Long,
         parcel.writeValue(currentTemperature)
         parcel.writeValue(targetTemperature)
         parcel.writeInt(floor)
+        parcel.writeParcelable(building, flags)
     }
 
     override fun describeContents(): Int {
