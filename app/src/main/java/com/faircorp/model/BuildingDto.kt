@@ -3,11 +3,11 @@ package com.faircorp.model
 import android.os.Parcel
 import android.os.Parcelable
 
-data class BuildingDto (val id: Long, val name: String):
-    Parcelable {
+data class BuildingDto(val id: Long, val name: String) :
+        Parcelable {
     constructor(parcel: Parcel) : this(
-        id = parcel.readLong(),
-        name = parcel.readString()!!
+            id = parcel.readLong(),
+            name = parcel.readString()!!
     ) {
     }
 

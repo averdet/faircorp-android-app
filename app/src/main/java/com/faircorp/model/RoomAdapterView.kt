@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.faircorp.OnRoomSelectedListener
 import com.faircorp.R
 
-class RoomAdapter(val listener: OnRoomSelectedListener): RecyclerView.Adapter<RoomAdapter.RoomViewHolder>() { // (1)
+class RoomAdapter(val listener: OnRoomSelectedListener) : RecyclerView.Adapter<RoomAdapter.RoomViewHolder>() { // (1)
 
     inner class RoomViewHolder(view: View) : RecyclerView.ViewHolder(view) { // (2)
         val name: TextView = view.findViewById(R.id.txt_room_item_name)
@@ -28,7 +28,7 @@ class RoomAdapter(val listener: OnRoomSelectedListener): RecyclerView.Adapter<Ro
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomViewHolder { // (6)
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.activity_rooms_item, parent, false)
+                .inflate(R.layout.activity_rooms_item, parent, false)
         return RoomViewHolder(view)
     }
 

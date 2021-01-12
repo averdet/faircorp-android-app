@@ -1,7 +1,6 @@
 package com.faircorp
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
@@ -24,12 +23,12 @@ class RoomsActivity : BasicActivity(), OnRoomSelectedListener {
         val adapter = RoomAdapter(this) // (3)
 
         recyclerView.layoutManager =
-            LinearLayoutManager(this)
+                LinearLayoutManager(this)
         recyclerView.addItemDecoration(
-            DividerItemDecoration(
-                this,
-                DividerItemDecoration.VERTICAL
-            )
+                DividerItemDecoration(
+                        this,
+                        DividerItemDecoration.VERTICAL
+                )
         )
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
@@ -37,8 +36,11 @@ class RoomsActivity : BasicActivity(), OnRoomSelectedListener {
         val building_id = intent.getLongExtra(BUILDING_NAME_PARAM, -200)
 
         lifecycleScope.launch(context = Dispatchers.IO) { // (1)
-            if ( building_id == (-200).toLong()) { runCatching { ApiServices().roomsApiService.findAll().execute() } }
-            else {runCatching { ApiServices().roomsApiService.findByBuildingId(building_id).execute() }}
+            if (building_id == (-200).toLong()) {
+                runCatching { ApiServices().roomsApiService.findAll().execute() }
+            } else {
+                runCatching { ApiServices().roomsApiService.findByBuildingId(building_id).execute() }
+            }
                     .onSuccess {
                         withContext(context = Dispatchers.Main) { // (3)
                             adapter.update(it.body() ?: emptyList())
@@ -47,13 +49,13 @@ class RoomsActivity : BasicActivity(), OnRoomSelectedListener {
                     .onFailure {
                         withContext(context = Dispatchers.Main) { // (3)
                             Toast.makeText(
-                                applicationContext,
-                                "Error on rooms loading $it",
-                                Toast.LENGTH_LONG
+                                    applicationContext,
+                                    "Error on rooms loading $it",
+                                    Toast.LENGTH_LONG
                             ).show()
                         }
                     }
-            }
+        }
     }
 
     override fun onRoomSelected(id: Long) {
