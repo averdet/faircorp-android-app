@@ -38,7 +38,7 @@ class RoomsActivity : BasicActivity(), OnRoomSelectedListener {
 
         lifecycleScope.launch(context = Dispatchers.IO) { // (1)
             if ( building_id == (-200).toLong()) { runCatching { ApiServices().roomsApiService.findAll().execute() } }
-            else {runCatching { ApiServices().roomsApiService.findByBuildingId(building_id).execute() }}// (2)
+            else {runCatching { ApiServices().roomsApiService.findByBuildingId(building_id).execute() }}
                     .onSuccess {
                         withContext(context = Dispatchers.Main) { // (3)
                             adapter.update(it.body() ?: emptyList())
