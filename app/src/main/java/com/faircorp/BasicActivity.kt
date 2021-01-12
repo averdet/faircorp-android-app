@@ -17,13 +17,13 @@ open class BasicActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.menu_rooms -> startActivity(
-                Intent(this, RoomsActivity::class.java)
+                Intent(this, RoomsActivity::class.java).putExtra(BUILDING_NAME_PARAM, -200)
             )
             R.id.menu_windows -> startActivity(
-                Intent(this, WindowsActivity::class.java)
+                Intent(this, WindowsActivity::class.java).putExtra(ROOM_NAME_PARAM, -200)
             )
             R.id.menu_heaters -> startActivity(
-                Intent(this, HeatersActivity::class.java)
+                Intent(this, HeatersActivity::class.java).putExtra(ROOM_NAME_PARAM, -200)
             )
             R.id.menu_website -> startActivity(
                 Intent(Intent.ACTION_VIEW, Uri.parse("http://verdet.xyz"))
