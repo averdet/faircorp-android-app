@@ -1,10 +1,7 @@
 package com.faircorp
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -12,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.faircorp.model.ApiServices
 import com.faircorp.model.BuildingAdapter
-import com.faircorp.model.RoomAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -31,12 +27,12 @@ class MainActivity : BasicActivity(), OnBuildingSelectedListener {
         val adapter = BuildingAdapter(this) // (3)
 
         recyclerView.layoutManager =
-            LinearLayoutManager(this)
+                LinearLayoutManager(this)
         recyclerView.addItemDecoration(
-            DividerItemDecoration(
-                this,
-                DividerItemDecoration.VERTICAL
-            )
+                DividerItemDecoration(
+                        this,
+                        DividerItemDecoration.VERTICAL
+                )
         )
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
@@ -44,20 +40,20 @@ class MainActivity : BasicActivity(), OnBuildingSelectedListener {
 
         lifecycleScope.launch(context = Dispatchers.IO) { // (1)
             runCatching { ApiServices().buildingApiService.findAll().execute() } // (2)
-                .onSuccess {
-                    withContext(context = Dispatchers.Main) { // (3)
-                        adapter.update(it.body() ?: emptyList())
+                    .onSuccess {
+                        withContext(context = Dispatchers.Main) { // (3)
+                            adapter.update(it.body() ?: emptyList())
+                        }
                     }
-                }
-                .onFailure {
-                    withContext(context = Dispatchers.Main) { // (3)
-                        Toast.makeText(
-                            applicationContext,
-                            "Error on buildings loading $it",
-                            Toast.LENGTH_LONG
-                        ).show()
+                    .onFailure {
+                        withContext(context = Dispatchers.Main) { // (3)
+                            Toast.makeText(
+                                    applicationContext,
+                                    "Error on buildings loading $it",
+                                    Toast.LENGTH_LONG
+                            ).show()
+                        }
                     }
-                }
         }
     }
 

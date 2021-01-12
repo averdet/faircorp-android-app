@@ -10,12 +10,12 @@ data class RoomDto(val id: Long,
                    val floor: Int,
                    val building: BuildingDto) : Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readLong(),
-        parcel.readString()!!,
-        parcel.readValue(Double::class.java.classLoader) as? Double,
-        parcel.readValue(Double::class.java.classLoader) as? Double,
-        parcel.readInt(),
-        building = parcel.readParcelable<BuildingDto>(BuildingDto::class.java.classLoader)!!
+            parcel.readLong(),
+            parcel.readString()!!,
+            parcel.readValue(Double::class.java.classLoader) as? Double,
+            parcel.readValue(Double::class.java.classLoader) as? Double,
+            parcel.readInt(),
+            building = parcel.readParcelable<BuildingDto>(BuildingDto::class.java.classLoader)!!
     ) {
     }
 

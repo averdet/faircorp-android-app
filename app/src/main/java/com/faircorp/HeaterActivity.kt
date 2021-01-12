@@ -1,6 +1,5 @@
 package com.faircorp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.SeekBar
@@ -15,7 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class HeaterActivity : AppCompatActivity() {
+class HeaterActivity : BasicActivity() {
 
     var heater: HeaterDto? = null
 
@@ -32,7 +31,7 @@ class HeaterActivity : AppCompatActivity() {
 
         heater = savedInstanceState.getParcelable("heater")
 
-        if ( heater != null ) loadHeater(savedInstanceState)
+        if (heater != null) loadHeater(savedInstanceState)
     }
 
     private fun loadHeater(savedInstanceState: Bundle?) {
@@ -55,7 +54,11 @@ class HeaterActivity : AppCompatActivity() {
                                 findViewById<Switch>(R.id.heater_switch).text = heater!!.heaterStatus.toString()
                                 findViewById<Switch>(R.id.heater_switch).isChecked = heater!!.heaterStatus == HeaterStatus.ON
                                 findViewById<TextView>(R.id.txt_heater_power).text = heater!!.power?.toString()
-                                findViewById<SeekBar>(R.id.heater_seekbar).progress = if ( heater!!.power == null) {0} else { heater!!.power!!.toInt() }
+                                findViewById<SeekBar>(R.id.heater_seekbar).progress = if (heater!!.power == null) {
+                                    0
+                                } else {
+                                    heater!!.power!!.toInt()
+                                }
 
                             }
                         }
@@ -72,7 +75,7 @@ class HeaterActivity : AppCompatActivity() {
         }
 
         val seekBar = findViewById<SeekBar>(R.id.heater_seekbar)
-        seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
+        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, b: Boolean) {
                 findViewById<TextView>(R.id.txt_heater_power).text = seekBar.progress.toString()
             }

@@ -2,11 +2,11 @@ package com.faircorp
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
 import com.faircorp.model.ApiServices
 import com.faircorp.model.WindowAdapter
 import kotlinx.coroutines.Dispatchers
@@ -23,12 +23,12 @@ class WindowsActivity : BasicActivity(), OnWindowSelectedListener {
         val adapter = WindowAdapter(this) // (3)
 
         recyclerView.layoutManager =
-            LinearLayoutManager(this)
+                LinearLayoutManager(this)
         recyclerView.addItemDecoration(
-            DividerItemDecoration(
-                this,
-                DividerItemDecoration.VERTICAL
-            )
+                DividerItemDecoration(
+                        this,
+                        DividerItemDecoration.VERTICAL
+                )
         )
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
@@ -36,22 +36,25 @@ class WindowsActivity : BasicActivity(), OnWindowSelectedListener {
         val room_id = intent.getLongExtra(ROOM_NAME_PARAM, -200)
 
         lifecycleScope.launch(context = Dispatchers.IO) { // (1)
-            if ( room_id == (-200).toLong()) { runCatching { ApiServices().windowsApiService.findAll().execute() } }
-            else { runCatching { ApiServices().windowsApiService.findByRoomId(room_id).execute() } }
-                .onSuccess {
-                    withContext(context = Dispatchers.Main) { // (3)
-                        adapter.update(it.body() ?: emptyList())
+            if (room_id == (-200).toLong()) {
+                runCatching { ApiServices().windowsApiService.findAll().execute() }
+            } else {
+                runCatching { ApiServices().windowsApiService.findByRoomId(room_id).execute() }
+            }
+                    .onSuccess {
+                        withContext(context = Dispatchers.Main) { // (3)
+                            adapter.update(it.body() ?: emptyList())
+                        }
                     }
-                }
-                .onFailure {
-                    withContext(context = Dispatchers.Main) { // (3)
-                        Toast.makeText(
-                            applicationContext,
-                            "Error on windows loading $it",
-                            Toast.LENGTH_LONG
-                        ).show()
+                    .onFailure {
+                        withContext(context = Dispatchers.Main) { // (3)
+                            Toast.makeText(
+                                    applicationContext,
+                                    "Error on windows loading $it",
+                                    Toast.LENGTH_LONG
+                            ).show()
+                        }
                     }
-                }
         }
     }
 

@@ -1,14 +1,14 @@
 package com.faircorp.model
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.faircorp.OnWindowSelectedListener
 import com.faircorp.R
 
-class WindowAdapter(val listener: OnWindowSelectedListener): RecyclerView.Adapter<WindowAdapter.WindowViewHolder>() { // (1)
+class WindowAdapter(val listener: OnWindowSelectedListener) : RecyclerView.Adapter<WindowAdapter.WindowViewHolder>() { // (1)
 
     inner class WindowViewHolder(view: View) : RecyclerView.ViewHolder(view) { // (2)
         val name: TextView = view.findViewById(R.id.txt_window_name)
@@ -28,7 +28,7 @@ class WindowAdapter(val listener: OnWindowSelectedListener): RecyclerView.Adapte
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WindowViewHolder { // (6)
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.activity_windows_item, parent, false)
+                .inflate(R.layout.activity_windows_item, parent, false)
         return WindowViewHolder(view)
     }
 

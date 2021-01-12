@@ -3,15 +3,15 @@ package com.faircorp.model
 import android.os.Parcel
 import android.os.Parcelable
 
-enum class WindowStatus { OPEN, CLOSED}
+enum class WindowStatus { OPEN, CLOSED }
 
 
-data class WindowDto (val id: Long, val name: String, val windowStatus: WindowStatus, val room: RoomDto): Parcelable {
+data class WindowDto(val id: Long, val name: String, val windowStatus: WindowStatus, val room: RoomDto) : Parcelable {
     constructor(parcel: Parcel) : this(
-        id = parcel.readLong(),
-        name = parcel.readString()!!,
-        windowStatus = WindowStatus.valueOf(parcel.readString()!!),
-        room = parcel.readParcelable<RoomDto>(RoomDto::class.java.classLoader)!!
+            id = parcel.readLong(),
+            name = parcel.readString()!!,
+            windowStatus = WindowStatus.valueOf(parcel.readString()!!),
+            room = parcel.readParcelable<RoomDto>(RoomDto::class.java.classLoader)!!
     ) {
     }
 

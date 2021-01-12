@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.faircorp.OnBuildingSelectedListener
 import com.faircorp.R
 
-class BuildingAdapter(val listener: OnBuildingSelectedListener): RecyclerView.Adapter<BuildingAdapter.BuildingViewHolder>() { // (1)
+class BuildingAdapter(val listener: OnBuildingSelectedListener) : RecyclerView.Adapter<BuildingAdapter.BuildingViewHolder>() { // (1)
 
     inner class BuildingViewHolder(view: View) : RecyclerView.ViewHolder(view) { // (2)
         val name: TextView = view.findViewById(R.id.txt_building_name)
@@ -26,7 +26,7 @@ class BuildingAdapter(val listener: OnBuildingSelectedListener): RecyclerView.Ad
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BuildingViewHolder { // (6)
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.activity_building_item, parent, false)
+                .inflate(R.layout.activity_building_item, parent, false)
         return BuildingViewHolder(view)
     }
 

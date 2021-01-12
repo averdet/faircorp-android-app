@@ -3,16 +3,16 @@ package com.faircorp.model
 import android.os.Parcel
 import android.os.Parcelable
 
-enum class HeaterStatus { ON, OFF}
+enum class HeaterStatus { ON, OFF }
 
-data class HeaterDto (val id: Long, val name: String, val power: Long?, val heaterStatus: HeaterStatus, val room: RoomDto) :
-    Parcelable {
+data class HeaterDto(val id: Long, val name: String, val power: Long?, val heaterStatus: HeaterStatus, val room: RoomDto) :
+        Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readLong(),
-        parcel.readString()!!,
-        parcel.readLong(),
-        HeaterStatus.valueOf(parcel.readString()!!),
-        parcel.readParcelable<RoomDto>(RoomDto::class.java.classLoader)!!
+            parcel.readLong(),
+            parcel.readString()!!,
+            parcel.readLong(),
+            HeaterStatus.valueOf(parcel.readString()!!),
+            parcel.readParcelable<RoomDto>(RoomDto::class.java.classLoader)!!
     ) {
     }
 

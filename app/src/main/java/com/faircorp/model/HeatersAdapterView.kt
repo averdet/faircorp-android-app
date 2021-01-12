@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.faircorp.OnHeaterSelectedListener
 import com.faircorp.R
 
-class HeaterAdapter(val listener: OnHeaterSelectedListener): RecyclerView.Adapter<HeaterAdapter.HeaterViewHolder>() { // (1)
+class HeaterAdapter(val listener: OnHeaterSelectedListener) : RecyclerView.Adapter<HeaterAdapter.HeaterViewHolder>() { // (1)
 
     inner class HeaterViewHolder(view: View) : RecyclerView.ViewHolder(view) { // (2)
         val name: TextView = view.findViewById(R.id.txt_heater_name)
@@ -28,7 +28,7 @@ class HeaterAdapter(val listener: OnHeaterSelectedListener): RecyclerView.Adapte
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeaterViewHolder { // (6)
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.activity_heaters_item, parent, false)
+                .inflate(R.layout.activity_heaters_item, parent, false)
         return HeaterViewHolder(view)
     }
 
